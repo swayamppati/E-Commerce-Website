@@ -40,8 +40,4 @@ export class UserService {
     // console.log(this.isAdmin);
     return this.isAdmin;
   }
-
-  check_admin(){
-    return this.isAdmin;
-  }
 }

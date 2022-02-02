@@ -25,7 +25,9 @@ export class BsNavbarComponent{
   }
 
   check_admin(){
-    this.isAdmin = this.user_ser.check_admin();
+    this.user$.subscribe(user => {
+        this.isAdmin = this.user_ser.check(user.uid);
+    });
   }
 
   // ngOnInit(){

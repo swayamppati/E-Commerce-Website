@@ -25,7 +25,6 @@ export class AuthService {
     .then(() =>{
       this.user$.subscribe(user => {
         this.user_ser.save(user);
-        this.user_ser.check(user.uid);
       });
       this.router.navigateByUrl(returnUrl);
     });
