@@ -24,6 +24,10 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { AuthService } from './auth.service';
+import { AuthGuardService as AuthGuard } from './auth-guard.service';
+import { AdminAuthGuardService as AdminAuthGuard } from './admin-auth-guard.service';
+import { UserService } from './user.service';
 
 @NgModule({
   declarations: [
@@ -46,46 +50,29 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot([
-      {
-        path: 'admin/admin-orders',
-        component: AdminOrdersComponent
-      },
-      {
-        path: 'admin/admin-products',
-        component: AdminProductsComponent
-      },
-      {
-        path: 'my-orders',
-        component: MyOrdersComponent
-      },
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: 'order-success',
-        component: OrderSuccessComponent
-      },
-      {
-        path: 'check-out',
-        component: CheckOutComponent
-      },
-      {
-        path: 'shopping-cart',
-        component: ShoppingCartComponent
-      },
-      {
-        path: 'products',
-        component: ProductsComponent
-      },
-      {
-        path: '',
-        component: HomeComponent
-      }
+      //Anonymous User
+      { path: 'login', component: LoginComponent },
+      { path: 'products', component: ProductsComponent },
+      { path: 'shopping-cart', component: ShoppingCartComponent },
+      { path: '', component: HomeComponent },
+      
+      //Logged in user
+      { path: 'my-orders', component: MyOrdersComponent, canActivate: [AuthGuard] },
+      { path: 'order-success', component: OrderSuccessComponent, canActivate: [AuthGuard] },
+      { path: 'check-out', component: CheckOutComponent, canActivate: [AuthGuard] },
+      
+      //Admin
+      { path: 'admin/admin-orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminAuthGuard] },
+      { path: 'admin/admin-products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminAuthGuard] }
     ]),
     NgbModule
   ],
-  providers: [],
+  providers: [
+    AuthService, 
+    AuthGuard,
+    AdminAuthGuard,
+    UserService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

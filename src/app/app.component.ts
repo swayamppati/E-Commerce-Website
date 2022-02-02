@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'oshop';
+
+  // constructor(private auth: AuthService, private router: Router){
+  //   this.auth.user$.subscribe(user => {
+  //     if(user){
+  //       let returnUrl = JSON.parse(localStorage.getItem('returnUrl'));
+  //       this.router.navigateByUrl(returnUrl);
+  //     }
+  //   })
+  // }
 }
+
+
