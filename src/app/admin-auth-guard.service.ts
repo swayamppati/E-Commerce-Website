@@ -12,7 +12,7 @@ import { UserService } from './user.service';
 })
 export class AdminAuthGuardService implements CanActivate{
 
-  isAdmin= true;
+  isAdmin:any;
 
   constructor(private auth: AuthService, private userService: UserService, private router: Router) {
     this.auth.user$.subscribe(user => {

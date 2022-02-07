@@ -10,22 +10,24 @@ import { map } from 'rxjs/operators';
   templateUrl: './bs-navbar.component.html',
   styleUrls: ['./bs-navbar.component.css']
 })
-export class BsNavbarComponent implements OnDestroy{
+export class BsNavbarComponent{
 
   user$:Observable<any>;
-  isAdmin$: any;
+  isAdmin: any;
   // @Input() isAdmin :boolean;
 
   constructor(private auth: AuthService, private userService: UserService) {
     this.user$ = this.auth.user$;
     this.auth.user$.subscribe(user => {
-      this.isAdmin$ = this.userService.getAdmins();
+      this.userService.getAdmins().subscribe((admins:any) => {
+        this.isAdmin = admins[user.uid];
+      });
     });
   }
 
-  ngOnDestroy(): void {
-      this.isAdmin$.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //     this.isAdmin$.unsubscribe();
+  // }
 
   logout(){
     this.auth.logout();

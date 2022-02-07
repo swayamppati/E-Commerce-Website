@@ -22,7 +22,7 @@
             </a>
             <ul ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/my-orders']">My Orders</a></li>
-              <div  *ngIf="isAdmin$ | async" >
+              <div  *ngIf="isAdmin" >
                 <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/admin/admin-orders']">Manage Orders</a></li>
                 <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/admin/admin-products']">Manage Products</a></li>
               </div>
