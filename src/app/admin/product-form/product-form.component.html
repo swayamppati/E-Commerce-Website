@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <form #f="ngForm" (ngSubmit)="save(f.value)" action="">
+                <div class="form-group my-4">
+                    <label for="title">Title</label>
+                    <input 
+                    required
+        
+                    [(ngModel)]="product.title"
+                    name="title"
+                    #title="ngModel"
+        
+                    id="title" 
+                    type="text" 
+                    class="form-control">
+                    <div class="alert alert-danger" *ngIf="title.touched && title.invalid">Title is Required</div>
+                </div>
+        
+                <div class="form-group my-4">
+                    <label for="price">Price</label>
+                    <div class="input-group mb-0">
+                        <span class="input-group-text">₨</span>
+                        <input 
+                        required
+                        [min]="0"
+        
+                        [(ngModel)]="product.price"
+                        name="price" 
+                        #price="ngModel"
+        
+                        id="price" 
+                        type="number" 
+                        class="form-control">
+                    </div>
+                    <div class="alert alert-danger mt-0" *ngIf="price.touched && price.invalid">
+                        <div *ngIf="price.errors?.required">
+                            Price is Required
+                        </div>
+                        <div *ngIf="price.errors?.min">
+                            Minimum price is 0.
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-group my-4">
+                    <label for="category">Category</label>
+                    <select 
+                    required
+        
+                    [(ngModel)]="product.category"
+                    name="category" 
+                    #category="ngModel"
+        
+                    id="category" 
+                    class="form-control">
+                        <option value=""></option>
+                        <option *ngFor="let c of categories$ | async" [value]="c.value">{{ c.name }}</option>
+                    </select>
+                    <div class="alert alert-danger" *ngIf="category.touched && category.invalid">Category is Required</div>
+                </div>
+        
+                <div class="form-group my-4">
+                    <label for="imageURL">Your Image URL:</label>
+                    <input 
+                    required
+                    
+                    [(ngModel)]="product.imageURL"
+                    name="imageURL" 
+                    #imageURL="ngModel"
+                    
+                    id="imageURL" 
+                    type="text" 
+                    class="form-control">
+                    <div class="alert alert-danger" *ngIf="imageURL.touched && imageURL.invalid">
+                        <div *ngIf="imageURL.errors?.required">
+                            ImageURL is Required
+                        </div>
+                        <div *ngIf="imageURL.errors?.url">
+                            ImageURL is Invalid
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary my-4">Save</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <div class="card mt-4" style="width: 18rem;">
+                <img [src]="imageURL.value" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.title }}</h5>
+                  <p class="card-text"><b>Price:</b> {{ product.price | currency:'INR':true}}</p>
+                  <p class="card-text"><b>Category:</b> {{ product.category }}</p>
+                </div>
+            </div>
+            <!-- <p>{{ (products$ | async)[productID]  }}</p> -->
+        </div>
+    </div> 
+</div>

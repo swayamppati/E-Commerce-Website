@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/">Eatery</a>
+      <a class="navbar-brand" routerLink="/">O Shop</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -17,13 +17,15 @@
           </ng-template>
         
           <li ngbDropdown class="nav-item dropdown" *ngIf="user$ | async as user; else anonymousUser">
-            <a ngbDropdownToggle class="nav-link active dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" (click)="check_admin()">
+            <a ngbDropdownToggle class="nav-link active dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{ user.displayName }}
             </a>
             <ul ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/my-orders']">My Orders</a></li>
-              <li ngbDropdownItem *ngIf="isAdmin" ><a class="dropdown-item" [routerLink]="['/admin/admin-orders']">Manage Orders</a></li>
-              <li ngbDropdownItem *ngIf="isAdmin" ><a class="dropdown-item" [routerLink]="['/admin/admin-products']">Manage Products</a></li>
+              <div  *ngIf="isAdmin$ | async" >
+                <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/admin/admin-orders']">Manage Orders</a></li>
+                <li ngbDropdownItem><a class="dropdown-item" [routerLink]="['/admin/admin-products']">Manage Products</a></li>
+              </div>
               <li ngbDropdownItem><a class="dropdown-item" (click)="logout()">Logout</a></li>
             </ul>
           </li>

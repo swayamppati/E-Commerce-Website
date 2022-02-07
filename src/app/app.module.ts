@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { CustomFormsModule } from 'ng2-validation';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +30,9 @@ import { AuthService } from './auth.service';
 import { AuthGuardService as AuthGuard } from './auth-guard.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './admin-auth-guard.service';
 import { UserService } from './user.service';
+import { ProductFormComponent } from './admin/product-form/product-form.component';
+import { CategoryService } from './category.service';
+import { ProductService } from './product.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +46,8 @@ import { UserService } from './user.service';
     MyOrdersComponent,
     AdminProductsComponent,
     AdminOrdersComponent,
-    LoginComponent
+    LoginComponent,
+    ProductFormComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -49,6 +55,8 @@ import { UserService } from './user.service';
     AngularFireAuthModule,
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    CustomFormsModule,
     RouterModule.forRoot([
       //Anonymous User
       { path: 'login', component: LoginComponent },
@@ -63,7 +71,9 @@ import { UserService } from './user.service';
       
       //Admin
       { path: 'admin/admin-orders', component: AdminOrdersComponent, canActivate: [AuthGuard, AdminAuthGuard] },
-      { path: 'admin/admin-products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminAuthGuard] }
+      { path: 'admin/admin-products/new', component: ProductFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
+      { path: 'admin/admin-products/:id', component: ProductFormComponent, canActivate: [AuthGuard, AdminAuthGuard] },
+      { path: 'admin/admin-products', component: AdminProductsComponent, canActivate: [AuthGuard, AdminAuthGuard] },
     ]),
     NgbModule
   ],
@@ -72,6 +82,8 @@ import { UserService } from './user.service';
     AuthGuard,
     AdminAuthGuard,
     UserService,
+    CategoryService,
+    ProductService
   ],
   bootstrap: [AppComponent]
 })

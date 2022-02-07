@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Auth } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth.service';
@@ -10,32 +10,24 @@ import { map } from 'rxjs/operators';
   templateUrl: './bs-navbar.component.html',
   styleUrls: ['./bs-navbar.component.css']
 })
-export class BsNavbarComponent{
+export class BsNavbarComponent implements OnDestroy{
 
   user$:Observable<any>;
-  isAdmin : any;
+  isAdmin$: any;
   // @Input() isAdmin :boolean;
 
-  constructor(private auth: AuthService, private user_ser: UserService) {
+  constructor(private auth: AuthService, private userService: UserService) {
     this.user$ = this.auth.user$;
+    this.auth.user$.subscribe(user => {
+      this.isAdmin$ = this.userService.getAdmins();
+    });
+  }
+
+  ngOnDestroy(): void {
+      this.isAdmin$.unsubscribe();
   }
 
   logout(){
     this.auth.logout();
   }
-
-  check_admin(){
-    this.user$.subscribe(user => {
-        this.isAdmin = this.user_ser.check(user.uid);
-    });
-  }
-
-  // ngOnInit(){
-  //   this.user$.pipe(map((user:boolean) => {
-  //     if(user){
-  //       this.isAdmin = this.user_ser.check_admin();
-  //     }
-  //   }));
-  // }
-
 }

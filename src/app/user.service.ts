@@ -1,19 +1,19 @@
-import { Injectable, Output } from '@angular/core';
-import { isAdmin } from '@firebase/util';
+import { Injectable, OnInit, Output } from '@angular/core';
 import * as auth from 'firebase/auth';
-import { getDatabase, ref, set, get, child, onValue, update, DataSnapshot} from 'firebase/database';
-import { AppUser } from './models/app-user';
-import { Observable } from 'rxjs';
-import { BsNavbarComponent } from './bs-navbar/bs-navbar.component';
+import { getDatabase, ref, update, DataSnapshot} from 'firebase/database';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService{
+  constructor(private db: AngularFireDatabase) {
+    this.admins = this.db
+    .object('/roles/admins')
+    .valueChanges();
+   }
 
-  constructor() { }
-
-  isAdmin: any;
+  admins: any;
 
   save(user: auth.User){
     const db = getDatabase();
@@ -23,21 +23,10 @@ export class UserService {
     });
   }
 
-  check(uid: string){
-    const db = getDatabase();
-    const admin = ref(db, 'users/' + uid);
-    onValue(admin, (snapshot) => {
-      const data =  snapshot.val()['isAdmin'];
-      console.log(data);
-      this.isAdmin = data;
-    });
-
-    // return get(child(ref(db), `roles/admins/${uid}`));
-    // // .then((snapshot) => {
-    // //   if(snapshot.exists()) { this.isAdmin =  true; }
-    // //   else { this.isAdmin = false; }
-    // // });
-    // console.log(this.isAdmin);
-    return this.isAdmin;
+  getAdmins(){
+    this.admins = this.db
+    .object('/roles/admins')
+    .valueChanges();
+    return this.admins;
   }
 }

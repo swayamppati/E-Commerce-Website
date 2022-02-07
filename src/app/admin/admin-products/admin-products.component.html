@@ -1,1 +1,20 @@
-<p>admin-products works!</p>
+<div class="container-fluid m-2">
+    <a class="btn btn-primary mt-4" [routerLink]="['/admin/admin-products/new']">New Product</a>
+    <table class="table table-hover mt-4">
+        <tbody>
+            <tr class="d-flex table-light">
+                <th class="col-4">Title</th>
+                <th class="col-4">Price</th>
+                <th class="col-4">Action</th>
+            </tr>
+            <tr class="d-flex" *ngFor="let prod of products$ | async">
+                <td class="col-4">{{ prod.title }}</td>
+                <td class="col-4">{{ prod.price }}</td>
+                <td class="col-4">
+                    <a class="btn btn-primary mx-2" [routerLink]="['/admin/admin-products/', prod.key]">Edit</a>
+                    <a class="btn btn-danger" (click)="delete(prod.key)" [routerLink]="['/admin/admin-products/', prod.key]">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

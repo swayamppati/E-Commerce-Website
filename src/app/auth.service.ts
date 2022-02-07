@@ -13,7 +13,7 @@ export class AuthService {
 
   user$: Observable<any>
 
-  constructor(private afAuth: AngularFireAuth, private route: ActivatedRoute, private router: Router, private user_ser: UserService) {
+  constructor(private afAuth: AngularFireAuth, private route: ActivatedRoute, private router: Router, private userService: UserService) {
     this.user$ = this.afAuth.authState;
    }
 
@@ -24,7 +24,8 @@ export class AuthService {
     this.afAuth.signInWithPopup(new auth.GoogleAuthProvider())
     .then(() =>{
       this.user$.subscribe(user => {
-        this.user_ser.save(user);
+        this.userService.save(user);
+        this.userService.getAdmins();
       });
       this.router.navigateByUrl(returnUrl);
     });
@@ -33,9 +34,6 @@ export class AuthService {
   logout(){
     this.afAuth.signOut()
     .then(() => {
-      this.user$.subscribe(user => {
-        this.user_ser.check(user.uid);
-      });
       this.router.navigateByUrl('/');
     });
   }
